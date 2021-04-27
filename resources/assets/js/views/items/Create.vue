@@ -42,6 +42,21 @@
             </sw-input-group>
 
             <sw-input-group
+              :error="price_buyError"
+              label="Precio de compra"
+              class="mb-4"
+              required
+            >
+              <sw-money
+                v-model.trim="price_buy"
+                :invalid="$v.formData.price_buy.$error"
+                :currency="defaultCurrencyForInput"
+                class="relative w-full focus:border focus:border-solid focus:border-primary-500"
+                @input="$v.formData.price_buy.$touch()"
+              />
+            </sw-input-group>
+
+            <sw-input-group
               :label="$t('items.price')"
               :error="priceError"
               class="mb-4"
@@ -159,6 +174,7 @@ export default {
       formData: {
         name: '',
         description: '',
+        price_buy: '',
         price: '',
         unit_id: null,
         unit: null,
@@ -188,6 +204,14 @@ export default {
       },
       set: function (newValue) {
         this.formData.price = Math.round(newValue * 100)
+      },
+    },
+    price_buy: {
+      get: function () {
+        return this.formData.price_buy / 100
+      },
+      set: function (newValue) {
+        this.formData.price_buy = Math.round(newValue * 100)
       },
     },
 
@@ -256,6 +280,23 @@ export default {
         return this.$t('validation.price_minvalue')
       }
     },
+    price_buyError() {
+      if (!this.$v.formData.price_buy.$error) {
+        return ''
+      }
+
+      if (!this.$v.formData.price_buy.required) {
+        return this.$t('validation.required')
+      }
+
+      if (!this.$v.formData.price_buy.maxLength) {
+        return this.$t('validation.price_maxlength')
+      }
+
+      if (!this.$v.formData.price_buy.minValue) {
+        return this.$t('validation.price_minvalue')
+      }
+    },
 
     descriptionError() {
       if (!this.$v.formData.description.$error) {
@@ -286,6 +327,13 @@ export default {
       },
 
       price: {
+        required,
+        numeric,
+        maxLength: maxLength(20),
+        minValue: minValue(0.1),
+      },
+
+      price_buy: {
         required,
         numeric,
         maxLength: maxLength(20),

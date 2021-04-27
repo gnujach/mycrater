@@ -71,30 +71,46 @@
 
             <sw-input-group
               :label="$t('customers.phone')"
+              :error="nameError"
               class="mt-4"
               variant="horizontal"
             >
               <sw-input
                 v-model.trim="formData.phone"
+                :invalid="$v.formData.phone.$error"
                 type="text"
                 name="phone"
                 class="mt-1 md:mt-0"
+                @input="$v.formData.phone.$touch()"
               />
             </sw-input-group>
 
             <sw-input-group
-              :label="$t('customers.website')"
-              :error="websiteError"
+              :label="$t('customers.address')"
+              :error="bill1Error"
               class="mt-4"
               variant="horizontal"
             >
-              <sw-input
-                v-model="formData.website"
-                :invalid="$v.formData.website.$error"
-                type="url"
+              <sw-textarea
+                v-model="billing.address_street_1"
+                :placeholder="$t('general.street_1')"
+                :invalid="$v.billing.address_street_1.$error"
+                rows="2"
+                cols="50"
                 class="mt-1 md:mt-0"
-                @input="$v.formData.website.$touch()"
+                @input="$v.billing.address_street_1.$touch()"
               />
+            </sw-input-group>
+            <br />
+            <sw-input-group :error="bill2Error" variant="horizontal">
+              <sw-textarea
+                v-model="billing.address_street_2"
+                :placeholder="$t('general.street_2')"
+                rows="2"
+                cols="50"
+                @input="$v.billing.address_street_2.$touch()"
+              />
+              <br />
             </sw-input-group>
           </sw-tab-item>
 
@@ -120,35 +136,20 @@
                 class="mt-1 md:mt-0"
               />
             </sw-input-group>
-
             <sw-input-group
-              :label="$t('customers.address')"
-              :error="bill1Error"
+              :label="$t('customers.website')"
+              :error="websiteError"
               class="mt-4"
               variant="horizontal"
             >
-              <sw-textarea
-                v-model="billing.address_street_1"
-                :placeholder="$t('general.street_1')"
-                rows="2"
-                cols="50"
+              <sw-input
+                v-model="formData.website"
+                :invalid="$v.formData.website.$error"
+                type="url"
                 class="mt-1 md:mt-0"
-                @input="$v.billing.address_street_1.$touch()"
+                @input="$v.formData.website.$touch()"
               />
-              <br />
             </sw-input-group>
-
-            <sw-input-group :error="bill2Error" variant="horizontal">
-              <sw-textarea
-                v-model="billing.address_street_2"
-                :placeholder="$t('general.street_2')"
-                rows="2"
-                cols="50"
-                @input="$v.billing.address_street_2.$touch()"
-              />
-              <br />
-            </sw-input-group>
-
             <sw-input-group
               :label="$t('customers.country')"
               class="mt-4"
@@ -422,13 +423,20 @@ export default {
       website: {
         url,
       },
+      phone: {
+        required,
+      },
+      contact_name: {
+        minLength: minLength(5),
+      },
     },
     billing: {
       address_street_1: {
-        maxLength: maxLength(255),
+        required,
+        maxLength: maxLength(250),
       },
       address_street_2: {
-        maxLength: maxLength(255),
+        maxLength: maxLength(250),
       },
     },
     shipping: {
@@ -450,6 +458,12 @@ export default {
         return ''
       }
       if (!this.$v.formData.name.required) {
+        return this.$tc('validation.required')
+      }
+      if (!this.$v.formData.contact_name.required) {
+        return this.$tc('validation.required')
+      }
+      if (!this.$v.formData.phone.required) {
         return this.$tc('validation.required')
       }
       if (!this.$v.formData.name.minLength) {
@@ -482,6 +496,9 @@ export default {
     bill1Error() {
       if (!this.$v.billing.address_street_1.$error) {
         return ''
+      }
+      if (!this.$v.billing.address_street_1.required) {
+        return this.$tc('validation.required')
       }
       if (!this.$v.billing.address_street_1.maxLength) {
         return this.$t('validation.address_maxlength')

@@ -1,4 +1,5 @@
 <?php
+
 namespace Crater\Models;
 
 use Crater\Models\CompanySetting;
@@ -18,7 +19,8 @@ class Item extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'price' => 'integer'
+        'price' => 'integer',
+        'price_buy' => 'integer'
     ];
 
     protected $appends = [
@@ -37,12 +39,17 @@ class Item extends Model
 
     public function scopeWhereSearch($query, $search)
     {
-        return $query->where('items.name', 'LIKE', '%'.$search.'%');
+        return $query->where('items.name', 'LIKE', '%' . $search . '%');
     }
 
     public function scopeWherePrice($query, $price)
     {
         return $query->where('items.price', $price);
+    }
+
+    public function scopeWherePriceBuy($query, $price)
+    {
+        return $query->where('items.pricebuy', $price);
     }
 
     public function scopeWhereUnit($query, $unit_id)
@@ -121,7 +128,7 @@ class Item extends Model
 
     public function estimateItems()
     {
-        return $this->hasMany( EstimateItem::class);
+        return $this->hasMany(EstimateItem::class);
     }
 
     public static function createItem($request)

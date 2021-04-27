@@ -1,6 +1,6 @@
 <template>
   <base-page>
-    <sw-page-header :title="$t('items.title')">
+    <sw-page-header :title="$t('items.title') + 'test'">
       <sw-breadcrumb slot="breadcrumbs">
         <sw-breadcrumb-item :title="$t('general.home')" to="dashboard" />
         <sw-breadcrumb-item :title="$tc('items.item', 2)" to="#" active />
@@ -191,6 +191,18 @@
             <span>
               {{ row.unit_name ? row.unit_name : $t('items.not_selected') }}
             </span>
+          </template>
+        </sw-table-column>
+
+        <sw-table-column
+          :sortable="true"
+          :label="$t('items.price_buy')"
+          show="price_buy"
+        >
+          <template slot-scope="row">
+            <span> {{ $t('items.price_buy') }} </span>
+
+            <div v-html="$utils.formatMoney(row.price_buy, defaultCurrency)" />
           </template>
         </sw-table-column>
 

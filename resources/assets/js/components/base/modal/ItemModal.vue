@@ -19,6 +19,22 @@
         </sw-input-group>
 
         <sw-input-group
+          :label="$t('items.price_buy')"
+          :error="price_buyError"
+          class="mb-4"
+          variant="horizontal"
+          required
+        >
+          <sw-money
+            v-model="price_buy"
+            :currency="defaultCurrencyForInput"
+            :invalid="$v.formData.price_buy.$error"
+            class="relative w-full focus:border focus:border-solid focus:border-primary"
+            @input="$v.formData.price.$touch()"
+          />
+        </sw-input-group>
+
+        <sw-input-group
           :label="$t('items.price')"
           :error="priceError"
           class="mb-4"
@@ -129,6 +145,7 @@ export default {
       formData: {
         name: null,
         price: null,
+        price_buy: null,
         description: null,
         unit: null,
         taxes: [],
@@ -147,6 +164,11 @@ export default {
         minValue: minValue(0.1),
         maxLength: maxLength(20),
       },
+      price_buy: {
+        required,
+        minValue: minValue(0.1),
+        maxLength: maxLength(20),
+      },
       description: {
         maxLength: maxLength(255),
       },
@@ -161,6 +183,14 @@ export default {
       },
       set: function (newValue) {
         this.formData.price = Math.round(newValue * 100)
+      },
+    },
+    price_buy: {
+      get: function () {
+        return this.formData.price_buy / 100
+      },
+      set: function (newValue) {
+        this.formData.price_buy = Math.round(newValue * 100)
       },
     },
 
@@ -209,6 +239,24 @@ export default {
 
       if (!this.$v.formData.price.minValue) {
         return this.$t('validation.price_minvalue')
+      }
+    },
+
+    price_buyError() {
+      if (!this.$v.formData.price_buy.$error) {
+        return ''
+      }
+
+      if (!this.$v.formData.price_buy.required) {
+        return this.$tc('validation.required')
+      }
+
+      if (!this.$v.formData.price_buy.maxLength) {
+        return this.$t('validation.price_buy_maxlength')
+      }
+
+      if (!this.$v.formData.price.minValue) {
+        return this.$t('validation.price_buy_minvalue')
       }
     },
 
