@@ -71,12 +71,12 @@
             :error="invoiceDateError"
             required
           >
-            <base-date-picker
+            <sw-input
               v-model="newInvoice.invoice_date"
-              :calendar-button="true"
-              calendar-button-icon="calendar"
-              class="mt-2"
-              @input="$v.newInvoice.invoice_date.$touch()"
+              type="text"
+              name="newInvoice.invoice_date."
+              tabindex="4"
+              disabled
             />
           </sw-input-group>
 
@@ -85,12 +85,11 @@
             :error="dueDateError"
             required
           >
-            <base-date-picker
+            <sw-input
               v-model="newInvoice.due_date"
-              :invalid="$v.newInvoice.due_date.$error"
-              :calendar-button="true"
-              calendar-button-icon="calendar"
+              name="newInvoice.due_date."
               class="mt-2"
+              disabled
               @input="$v.newInvoice.due_date.$touch()"
             />
           </sw-input-group>
@@ -817,13 +816,13 @@ export default {
 
               this.newInvoice.invoice_date = moment(
                 res1.data.invoice.invoice_date,
-                'YYYY-MM-DD'
-              ).toString()
+                'YYYY-MM-DD hh:mm'
+              ).format('DD-MM-YYYY hh:mm')
 
               this.newInvoice.due_date = moment(
                 res1.data.invoice.due_date,
-                'YYYY-MM-DD'
-              ).toString()
+                'YYYY-MM-DD hh:mm'
+              ).format('DD-MM-YYYY hh:mm')
 
               this.discountPerItem = res1.data.invoice.discount_per_item
               this.selectedCurrency = this.defaultCurrency
@@ -850,8 +849,12 @@ export default {
       await this.setInitialCustomFields('Invoice')
       await this.fetchTaxTypes({ limit: 'all' })
       this.selectedCurrency = this.defaultCurrency
-      this.newInvoice.invoice_date = moment().toString()
-      this.newInvoice.due_date = moment().add(7, 'days').toString()
+      this.newInvoice.invoice_date = moment().format('DD-MM-YYYY hh:mm:ss')
+      // this.newInvoice.invoice_date = moment().format('DD-MM-YYYY')
+
+      this.newInvoice.due_date = moment()
+        .add(30, 'm')
+        .format('DD-MM-YYYY hh:mm:ss')
 
       this.isLoadingInvoice = false
     },
