@@ -38,7 +38,11 @@ class CustomerRequest extends FormRequest
                 'email',
                 'nullable',
                 'unique:users,email',
-            ]
+            ],
+            'phone' => [
+                'required',
+                Rule::unique('users', 'phone')
+            ],
         ];
 
         if ($this->isMethod('PUT') && $this->email != null) {
@@ -47,6 +51,10 @@ class CustomerRequest extends FormRequest
                     'email',
                     'nullable',
                     Rule::unique('users')->ignore($this->route('customer')->id)
+                ],
+                $rules['phone'] = [
+                    'required',
+                    Rule::unique('users', 'phone')->ignore($this->user)
                 ]
             ];
         };

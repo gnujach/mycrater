@@ -39,8 +39,10 @@ class BootstrapController extends Controller
         return response()->json([
             'user' => $user,
             'company' => $user->company,
-            'currencies' => Currency::all(),
-            'countries' => Country::all(),
+            // 'currencies' => Currency::all(),
+            // 'countries' => Country::all(),
+            'currencies' => Currency::where('id', 29)->get(),
+            'countries' => Country::where('id', 142)->get(),
             'default_currency' => $default_currency,
             'default_language' => $default_language,
             'moment_date_format' => $settings['moment_date_format'],

@@ -33,9 +33,6 @@ class UserRequest extends FormRequest
                 'email',
                 Rule::unique('users')
             ],
-            'phone' => [
-                'nullable'
-            ],
             'password' => [
                 'required',
                 'min:8'
@@ -48,6 +45,7 @@ class UserRequest extends FormRequest
                 'email',
                 Rule::unique('users')->ignore($this->user)
             ];
+
             $rules['password'] = [
                 'nullable',
                 'min:8'
