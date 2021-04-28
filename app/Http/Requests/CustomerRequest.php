@@ -45,16 +45,17 @@ class CustomerRequest extends FormRequest
             ],
         ];
 
-        if ($this->isMethod('PUT') && $this->email != null) {
+        if ($this->isMethod('PUT') && $this->phone != null) {
             $rules = [
                 'email' => [
                     'email',
                     'nullable',
                     Rule::unique('users')->ignore($this->route('customer')->id)
                 ],
-                $rules['phone'] = [
+                'phone' =>
+                [
                     'required',
-                    Rule::unique('users', 'phone')->ignore($this->user)
+                    Rule::unique('users', 'phone')->ignore($this->route('customer')->id)
                 ]
             ];
         };

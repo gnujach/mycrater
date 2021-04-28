@@ -4,7 +4,7 @@
       <div class="flex-1 p-5 sm:p-6">
         <sw-tabs>
           <!-- tab1 -->
-          <sw-tab-item title="Basic Info" class="mt-5">
+          <sw-tab-item title="Información básica" class="mt-5">
             <sw-input-group
               :label="$t('customers.display_name')"
               :error="nameError"
@@ -51,220 +51,46 @@
             </sw-input-group>
 
             <sw-input-group
-              :label="$tc('settings.currencies.currency')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-select
-                v-model="currency"
-                :options="currencies"
-                :searchable="true"
-                :allow-empty="false"
-                :show-labels="false"
-                :placeholder="$t('customers.select_currency')"
-                :max-height="200"
-                label="name"
-                class="mt-1 md:mt-0"
-                track-by="id"
-              />
-            </sw-input-group>
-
-            <sw-input-group
               :label="$t('customers.phone')"
-              :error="nameError"
+              :error="phoneError"
               class="mt-4"
               variant="horizontal"
+              required
             >
               <sw-input
-                v-model.trim="formData.phone"
                 :invalid="$v.formData.phone.$error"
+                v-model.trim="formData.phone"
                 type="text"
                 name="phone"
                 class="mt-1 md:mt-0"
                 @input="$v.formData.phone.$touch()"
               />
             </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.address')"
-              :error="bill1Error"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-textarea
-                v-model="billing.address_street_1"
-                :placeholder="$t('general.street_1')"
-                :invalid="$v.billing.address_street_1.$error"
-                rows="2"
-                cols="50"
-                class="mt-1 md:mt-0"
-                @input="$v.billing.address_street_1.$touch()"
-              />
-            </sw-input-group>
-            <br />
-            <sw-input-group :error="bill2Error" variant="horizontal">
-              <sw-textarea
-                v-model="billing.address_street_2"
-                :placeholder="$t('general.street_2')"
-                rows="2"
-                cols="50"
-                @input="$v.billing.address_street_2.$touch()"
-              />
-              <br />
-            </sw-input-group>
-          </sw-tab-item>
-
-          <!-- tab2 -->
-          <sw-tab-item title="Billing Address" class="mt-5">
-            <sw-input-group :label="$t('customers.name')" variant="horizontal">
-              <sw-input
-                v-model="billing.name"
-                type="text"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.phone')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model.trim="billing.phone"
-                type="text"
-                name="phone"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-            <sw-input-group
-              :label="$t('customers.website')"
-              :error="websiteError"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="formData.website"
-                :invalid="$v.formData.website.$error"
-                type="url"
-                class="mt-1 md:mt-0"
-                @input="$v.formData.website.$touch()"
-              />
-            </sw-input-group>
-            <sw-input-group
-              :label="$t('customers.country')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-select
-                v-model="billingCountry"
-                :options="countries"
-                :searchable="true"
-                :show-labels="false"
-                :placeholder="$t('general.select_country')"
-                :allow-empty="false"
-                track-by="id"
-                label="name"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.state')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="billing.state"
-                type="text"
-                name="billingState"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.city')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="billing.city"
-                type="text"
-                name="billingCity"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.zip_code')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="billing.zip"
-                type="text"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-          </sw-tab-item>
-
-          <!-- tab3 -->
-          <sw-tab-item title="Shipping Address" class="mt-5">
-            <div class="grid md:grid-cols-12">
-              <div class="flex justify-end col-span-12">
-                <sw-button
-                  ref="sameAddress"
-                  variant="primary"
-                  type="button"
-                  @click="copyAddress(true)"
-                >
-                  {{ $t('customers.copy_billing_address') }}
-                </sw-button>
-              </div>
-            </div>
-
-            <sw-input-group
-              :label="$t('customers.name')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="shipping.name"
-                type="text"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.phone')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model.trim="shipping.phone"
-                type="text"
-                name="phone"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
+            <sw-divider class="mb-5 mt-5 md:mb-8" />
             <sw-input-group
               :label="$t('customers.address')"
               :error="ship1Error"
               class="mt-4"
               variant="horizontal"
+              required
             >
               <sw-textarea
                 v-model="shipping.address_street_1"
                 :placeholder="$t('general.street_1')"
+                :invalid="$v.shipping.address_street_1.$error"
                 rows="2"
                 cols="50"
                 class="mt-1 md:mt-0"
                 @input="$v.shipping.address_street_1.$touch()"
               />
-              <br />
             </sw-input-group>
-
-            <sw-input-group :error="ship2Error" variant="horizontal">
+            <br />
+            <sw-input-group
+              :error="ship2Error"
+              label="Referencia dirección"
+              class="mt-4"
+              variant="horizontal"
+            >
               <sw-textarea
                 v-model="shipping.address_street_2"
                 :placeholder="$t('general.street_2')"
@@ -273,62 +99,6 @@
                 @input="$v.shipping.address_street_2.$touch()"
               />
               <br />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.country')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-select
-                v-model="shippingCountry"
-                :options="countries"
-                :searchable="true"
-                :show-labels="false"
-                :allow-empty="false"
-                :placeholder="$t('general.select_country')"
-                track-by="id"
-                label="name"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.state')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="shipping.state"
-                type="text"
-                name="shippingState"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.city')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="shipping.city"
-                type="text"
-                name="shippingCity"
-                class="mt-1 md:mt-0"
-              />
-            </sw-input-group>
-
-            <sw-input-group
-              :label="$t('customers.zip_code')"
-              class="mt-4"
-              variant="horizontal"
-            >
-              <sw-input
-                v-model="shipping.zip"
-                type="text"
-                class="mt-1 md:mt-0"
-              />
             </sw-input-group>
           </sw-tab-item>
         </sw-tabs>
@@ -361,7 +131,6 @@ const {
   minLength,
   email,
   numeric,
-  url,
   maxLength,
 } = require('vuelidate/lib/validators')
 
@@ -387,17 +156,7 @@ export default {
         contact_name: null,
         addresses: [],
       },
-      billing: {
-        name: null,
-        country_id: null,
-        state: null,
-        city: null,
-        phone: null,
-        zip: null,
-        address_street_1: null,
-        address_street_2: null,
-        type: 'billing',
-      },
+
       shipping: {
         name: null,
         country_id: null,
@@ -420,27 +179,19 @@ export default {
       email: {
         email,
       },
-      website: {
-        url,
-      },
       phone: {
         required,
+        numeric,
+        minLength: minLength(10),
+        maxLength: maxLength(10),
       },
       contact_name: {
         minLength: minLength(5),
       },
     },
-    billing: {
-      address_street_1: {
-        required,
-        maxLength: maxLength(250),
-      },
-      address_street_2: {
-        maxLength: maxLength(250),
-      },
-    },
     shipping: {
       address_street_1: {
+        required,
         maxLength: maxLength(255),
       },
       address_street_2: {
@@ -449,7 +200,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['currencies', 'countries']),
+    // ...mapGetters(['currencies', 'countries']),
     ...mapGetters('company', ['defaultCurrency']),
     ...mapGetters('modal', ['modalDataID', 'modalData', 'modalActive']),
 
@@ -475,6 +226,25 @@ export default {
       }
       if (!this.$v.formData.name.alpha) {
         return this.$tc('validation.characters_only')
+      }
+    },
+    phoneError() {
+      if (!this.$v.formData.phone.$error) {
+        return ''
+      }
+      if (!this.$v.formData.phone.required) {
+        return this.$tc('validation.required')
+      } else {
+        if (!this.$v.formData.phone.numeric) {
+          return 'Solo acepta números'
+        }
+
+        if (!this.$v.formData.phone.minLength) {
+          return 'Número incorrecto debe de tener 10 dígitos'
+        }
+        if (!this.$v.formData.phone.maxLength) {
+          return 'Número incorrecto debe de tener 10 dígitos'
+        }
       }
     },
     emailError() {
@@ -516,8 +286,12 @@ export default {
       if (!this.$v.shipping.address_street_1.$error) {
         return ''
       }
-      if (!this.$v.shipping.address_street_1.maxLength) {
-        return this.$t('validation.address_maxlength')
+      if (!this.$v.shipping.address_street_1.required) {
+        return this.$tc('validation.required')
+      } else {
+        if (!this.$v.shipping.address_street_1.maxLength) {
+          return this.$t('validation.address_maxlength')
+        }
       }
     },
     ship2Error() {
@@ -571,12 +345,7 @@ export default {
         this.isEdit = false
       }
     },
-    billingCountry() {
-      if (this.billingCountry) {
-        this.billing.country_id = this.billingCountry.id
-        return true
-      }
-    },
+
     shippingCountry() {
       if (this.shippingCountry) {
         this.shipping.country_id = this.shippingCountry.id
@@ -618,7 +387,6 @@ export default {
       this.billingCountry = null
       this.shippingCountry = null
 
-      this.billing = { ...AddressStub }
       this.shipping = { ...AddressStub }
       this.$v.formData.$reset()
     },
@@ -642,27 +410,16 @@ export default {
       return true
     },
     checkAddress() {
-      const isBillingEmpty = Object.values(this.billing).every(
-        (val) => val === null || val === ''
-      )
       const isShippingEmpty = Object.values(this.shipping).every(
         (val) => val === null || val === ''
       )
-      if (isBillingEmpty === true && isBillingEmpty === true) {
+      if (isBillingEmpty === true) {
         this.formData.addresses = []
         return true
       }
 
-      if (isBillingEmpty === false && isShippingEmpty === false) {
-        this.formData.addresses = [
-          { ...this.billing, type: 'billing' },
-          { ...this.shipping, type: 'shipping' },
-        ]
-        return true
-      }
-
-      if (isBillingEmpty === false) {
-        this.formData.addresses.push({ ...this.billing, type: 'billing' })
+      if (isShippingEmpty === false) {
+        this.formData.addresses = [{ ...this.shipping, type: 'shipping' }]
         return true
       }
 
@@ -676,12 +433,8 @@ export default {
       this.formData.contact_name = this.modalData.contact_name
       this.formData.phone = this.modalData.phone
       this.formData.website = this.modalData.website
-      this.currency = this.modalData.currency
+      // this.currency = this.modalData.currency
 
-      if (this.modalData.billing_address) {
-        this.billing = this.modalData.billing_address
-        this.billingCountry = this.modalData.billing_address.country
-      }
       if (this.modalData.shipping_address) {
         this.shipping = this.modalData.shipping_address
         this.shippingCountry = this.modalData.shipping_address.country
@@ -689,27 +442,18 @@ export default {
     },
     async submitCustomerData() {
       this.$v.formData.$touch()
-
+      this.$v.shipping.$touch()
       if (this.$v.$invalid) {
         return true
       }
 
       // this.checkAddress()
-      if (this.hasBillingAdd && this.hasShippingAdd) {
-        this.formData.addresses = [{ ...this.billing }, { ...this.shipping }]
-      } else if (this.hasBillingAdd) {
-        this.formData.addresses = [{ ...this.billing }]
-      } else if (this.hasShippingAdd) {
+      if (this.hasShippingAdd) {
         this.formData.addresses = [{ ...this.shipping }]
       }
 
       this.isLoading = true
 
-      if (this.currency) {
-        this.formData.currency_id = this.currency.id
-      } else {
-        this.formData.currency_id = this.defaultCurrency.id
-      }
       try {
         let response = null
         if (this.modalDataID) {
