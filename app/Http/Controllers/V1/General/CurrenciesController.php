@@ -16,8 +16,8 @@ class CurrenciesController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // $currencies = Currency::latest()->get();
-        $currencies = Currency::where('id', 1)->get();
+        $currencies = Currency::latest()->get();
+        // $currencies = Currency::where('id', 1)->get();
 
         return response()->json([
             'currencies' => $currencies
