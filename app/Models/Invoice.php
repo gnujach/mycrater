@@ -532,8 +532,60 @@ class Invoice extends Model implements HasMedia
             'labels' => $labels,
             'taxes' => $taxes
         ]);
-
+        // return PDF::loadView('app.pdf.invoice.' . 'invoice4');
         return PDF::loadView('app.pdf.invoice.' . $invoiceTemplate->view);
+    }
+    public function getPrintData()
+    {
+        $taxTypes = [];
+        $taxes = [];
+        $labels = [];
+
+        if ($this->tax_per_item === 'YES') {
+            foreach ($this->items as $item) {
+                foreach ($item->taxes as $tax) {
+                    if (!in_array($tax->name, $taxTypes)) {
+                        array_push($taxTypes, $tax->name);
+                        array_push($labels, $tax->name . ' (' . $tax->percent . '%)');
+                    }
+                }
+            }
+
+            foreach ($taxTypes as $taxType) {
+                $total = 0;
+
+                foreach ($this->items as $item) {
+                    foreach ($item->taxes as $tax) {
+                        if ($tax->name == $taxType) {
+                            $total += $tax->amount;
+                        }
+                    }
+                }
+
+                array_push($taxes, $total);
+            }
+        }
+
+        $invoiceTemplate = InvoiceTemplate::find($this->invoice_template_id);
+
+        $company = Company::find($this->company_id);
+        $locale = CompanySetting::getSetting('language',  $company->id);
+
+        App::setLocale($locale);
+
+        $logo = $company->logo_path;
+
+        view()->share([
+            'invoice' => $this,
+            'company_address' => $this->getCompanyAddress(),
+            'shipping_address' => $this->getCustomerShippingAddress(),
+            'billing_address' => $this->getCustomerBillingAddress(),
+            'notes' => $this->getNotes(),
+            'logo' => $logo ?? null,
+            'labels' => $labels,
+            'taxes' => $taxes
+        ]);
+        return View('app.pdf.invoice.' . 'invoice5');
     }
 
     public function getEmailAttachmentSetting()

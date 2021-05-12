@@ -119,11 +119,11 @@ export default {
           },
         ],
         [
-          {
-            title: 'navigation.estimates',
-            icon: 'document-icon',
-            route: '/admin/estimates',
-          },
+          // {
+          //   title: 'navigation.estimates',
+          //   icon: 'document-icon',
+          //   route: '/admin/estimates',
+          // },
           {
             title: 'navigation.invoices',
             icon: 'document-text-icon',

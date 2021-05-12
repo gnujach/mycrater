@@ -21,6 +21,17 @@
         >
           {{ $t('invoices.send_invoice') }}
         </sw-button>
+        <div class="mr-3 ml-3 text-sm">
+          <sw-button
+            v-if="invoice.status === 'DRAFT'"
+            :disabled="isSendingEmail"
+            variant="primary-outline"
+            class="text-sm"
+            @click="shareablePrint"
+          >
+            Imprimir Ticket
+          </sw-button>
+        </div>
         <sw-button
           v-if="
             invoice.status === 'SENT' ||
@@ -293,6 +304,7 @@ export default {
     shareableLink() {
       return `/invoices/pdf/${this.invoice.unique_hash}`
     },
+
     getCurrentInvoiceId() {
       if (this.invoice && this.invoice.id) {
         return this.invoice.id
@@ -327,6 +339,11 @@ export default {
 
     hasActiveUrl(id) {
       return this.$route.params.id == id
+    },
+
+    shareablePrint() {
+      var newWin
+      newWin = window.open('/invoices/print/' + this.invoice.unique_hash)
     },
 
     async loadInvoices() {

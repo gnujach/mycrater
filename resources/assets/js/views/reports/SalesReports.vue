@@ -104,22 +104,22 @@ export default {
 
   data() {
     return {
-      reportTypes: ['By Customer', 'By Item'],
-      selectedType: 'By Customer',
+      reportTypes: ['Por Cliente', 'Por Artículo'],
+      selectedType: 'Por Cliente',
       dateRange: [
-        'Today',
-        'This Week',
-        'This Month',
-        'This Quarter',
-        'This Year',
-        'Previous Week',
-        'Previous Month',
-        'Previous Quarter',
-        'Previous Year',
-        'Custom',
+        'Hoy',
+        'Esta semana',
+        'Este mes',
+        'Este trimestre',
+        'Este año',
+        'Semana previa',
+        'Mes previo',
+        'Trimestre previo',
+        'Año previo',
+        'Rango de fechas',
       ],
 
-      selectedRange: 'This Month',
+      selectedRange: 'Este mes',
       range: new Date(),
       formData: {
         from_date: moment().startOf('month').toString(),
@@ -225,27 +225,27 @@ export default {
 
     onChangeDateRange() {
       switch (this.selectedRange) {
-        case 'Today':
+        case 'Hoy':
           this.formData.from_date = moment().toString()
           this.formData.to_date = moment().toString()
           break
 
-        case 'This Week':
+        case 'Esta semana':
           this.formData.from_date = this.getThisDate('startOf', 'isoWeek')
           this.formData.to_date = this.getThisDate('endOf', 'isoWeek')
           break
 
-        case 'This Month':
+        case 'Este mes':
           this.formData.from_date = this.getThisDate('startOf', 'month')
           this.formData.to_date = this.getThisDate('endOf', 'month')
           break
 
-        case 'This Quarter':
+        case 'Este trimestre':
           this.formData.from_date = this.getThisDate('startOf', 'quarter')
           this.formData.to_date = this.getThisDate('endOf', 'quarter')
           break
 
-        case 'This Year':
+        case 'Este año':
           this.formData.from_date = this.getThisDate('startOf', 'year')
           this.formData.to_date = this.getThisDate('endOf', 'year')
           break
@@ -280,7 +280,7 @@ export default {
     },
 
     async getInitialReport() {
-      if (this.selectedType === 'By Customer') {
+      if (this.selectedType === 'Por Cliente') {
         this.url = this.customerDateRangeUrl
         return true
       }
@@ -300,7 +300,7 @@ export default {
       if (this.$v.$invalid) {
         return true
       }
-      if (this.selectedType === 'By Customer') {
+      if (this.selectedType === 'Por Cliente') {
         this.url = this.customerDateRangeUrl
         return true
       }
@@ -315,7 +315,7 @@ export default {
 
       window.open(this.getReportUrl + '&download=true')
       setTimeout(() => {
-        if (this.selectedType === 'By Customer') {
+        if (this.selectedType === 'Por Cliente') {
           this.url = this.customerDateRangeUrl
           return true
         }

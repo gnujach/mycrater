@@ -4,6 +4,7 @@ use Crater\Http\Controllers\V1\Auth\LoginController;
 use Crater\Http\Controllers\V1\Estimate\EstimatePdfController;
 use Crater\Http\Controllers\V1\Expense\DownloadReceiptController;
 use Crater\Http\Controllers\V1\Invoice\InvoicePdfController;
+use Crater\Http\Controllers\V1\Invoice\InvoicePrintController;
 use Crater\Http\Controllers\V1\Mobile\Customer\EstimatePdfController as CustomerEstimatePdfController;
 use Crater\Http\Controllers\V1\Mobile\Customer\InvoicePdfController as CustomerInvoicePdfController;
 use Crater\Http\Controllers\V1\Payment\PaymentPdfController;
@@ -45,7 +46,6 @@ Route::prefix('reports')->group(function () {
     // report for profit and loss
     //----------------------------------
     Route::get('/profit-loss/{hash}', ProfitLossReportController::class);
-
 });
 
 
@@ -54,6 +54,9 @@ Route::prefix('reports')->group(function () {
 
 Route::get('/invoices/pdf/{invoice:unique_hash}', InvoicePdfController::class);
 
+// print ticket
+
+Route::get('/invoices/print/{invoice:unique_hash}', InvoicePrintController::class);
 
 // download estimate pdf
 // -------------------------------------------------
